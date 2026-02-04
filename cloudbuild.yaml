@@ -1,3 +1,5 @@
+# Add the 'steps:' key at the top level
+steps:
 # Step 1: Build & Push with Kaniko
 # We use Kaniko instead of 'docker build' for better caching and security
 - name: 'gcr.io/kaniko-project/executor:latest'
