@@ -1,0 +1,33 @@
+# Step 1: Build & Push with Kaniko
+# We use Kaniko instead of 'docker build' for better caching and security
+- name: 'gcr.io/kaniko-project/executor:latest'
+  args:
+    # Set the build context to the workspace root using absolute path
+    - '--context=dir:///workspace'
+    # Explicitly specify the Dockerfile location
+    - '--dockerfile=/workspace/Dockerfile'
+    # Destination in Artifact Registry (Change region if needed)
+    - '--destination=us-central1-docker.pkg.dev/$PROJECT_ID/my-app-repo/nginx-configurator:$SHORT_SHA'
+    # Enable caching to speed up subsequent builds (npm install is slow!)
+    - '--cache=true'
+    - '--cache-ttl=24h'
+
+# Step 2: Deploy to Cloud Run
+# Deploy the image we just built to a serverless container
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args:
+    - 'run'
+    - 'deploy'
+    - 'nginx-config-tool'  # Service name
+    - '--image'
+    - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-app-repo/nginx-configurator:$SHORT_SHA'
+    - '--region'
+    - 'us-central1'
+    - '--platform'
+    - 'managed'
+    - '--allow-unauthenticated' # Make it public for testing
+
+# Logging configuration required for custom Service Accounts
+options:
+  logging: CLOUD_LOGGING_ONLY
