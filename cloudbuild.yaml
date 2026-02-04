@@ -29,5 +29,5 @@
     - '--allow-unauthenticated' # Make it public for testing
 
 # Logging configuration required for custom Service Accounts
-options:
-  logging: CLOUD_LOGGING_ONLY
+  options:
+    logging: CLOUD_LOGGING_ONLY
