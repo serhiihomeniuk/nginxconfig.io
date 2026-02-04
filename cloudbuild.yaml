@@ -1,4 +1,3 @@
-# Add the 'steps:' key at the top level
 steps:
 # Step 1: Build & Push with Kaniko
 # We use Kaniko instead of 'docker build' for better caching and security
@@ -30,6 +29,6 @@ steps:
     - 'managed'
     - '--allow-unauthenticated' # Make it public for testing
 
-# Logging configuration required for custom Service Accounts
-  options:
-    logging: CLOUD_LOGGING_ONLY
+# Global options for the entire build
+options: # <--- Moved here, at the same level as 'steps:'
+  logging: CLOUD_LOGGING_ONLY
