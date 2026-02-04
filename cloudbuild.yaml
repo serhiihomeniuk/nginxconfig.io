@@ -28,6 +28,8 @@ steps:
     - '--platform'
     - 'managed'
     - '--allow-unauthenticated' # Make it public for testing
+    - '--port' # <--- ДОДАЙТЕ ЦЕЙ РЯДОК
+    - '80'    # <--- І ЦЕЙ РЯДОК
 
 # Global options for the entire build
 options: # <--- Moved here, at the same level as 'steps:'
